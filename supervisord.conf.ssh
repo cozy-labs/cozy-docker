@@ -1,0 +1,16 @@
+[supervisord]
+nodaemon=true
+
+[supervisorctl]
+serverurl=unix:///tmp/supervisor.sock
+
+[unix_http_server]
+file = /tmp/supervisor.sock
+chmod = 0777
+chown= nobody:nogroup
+
+[program:sshd]
+command=/usr/sbin/sshd -D
+stdout_logfile=/var/log/supervisor/%(program_name)s.log
+stderr_logfile=/var/log/supervisor/%(program_name)s.log
+autorestart=true
