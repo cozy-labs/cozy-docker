@@ -28,7 +28,9 @@ RUN useradd -M cozy-data-system
 RUN useradd -M cozy-home
 
 # config_couchdb
-RUN mkdir /etc/cozy && echo -e "cozy\ncozypass" > /etc/cozy/couchdb.login
+ADD couchdb.conf /etc/supervisor/conf.d/couchdb.conf
+RUN mkdir /etc/cozy && /bin/echo -e "cozy\ncozypass" > /etc/cozy/couchdb.login
+RUN mkdir -p /var/run/couchdb && couchdb -b && sleep 5 && curl -X PUT http://127.0.0.1:5984/_config/admins/cozy -d '"cozypass"' && couchdb -k
 RUN chown cozy-data-system "/etc/cozy/couchdb.login"
 RUN chmod 700 "/etc/cozy/couchdb.login"
 
