@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:trusty
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -6,11 +6,11 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get --quiet --quiet update
 RUN apt-get --assume-yes upgrade
 RUN apt-get install --quiet --assume-yes python-dev python-setuptools python-pip libssl-dev libxml2-dev libxslt1-dev build-essential git imagemagick sqlite3 software-properties-common curl wget
-RUN curl -o - https://bootstrap.pypa.io/ez_setup.py -O - | python
-RUN curl -o - https://bootstrap.pypa.io/get-pip.py | python -
+#RUN curl -o - https://bootstrap.pypa.io/ez_setup.py -O - | python
+#RUN curl -o - https://bootstrap.pypa.io/get-pip.py | python -
 
 # install_node10
-RUN apt-get install --quiet --assume-yes nodejs npm
+RUN apt-get install --quiet --assume-yes nodejs npm && ln -s /usr/bin/nodejs /usr/local/bin/node
 
 # install_couchdb
 RUN apt-get install --quiet --assume-yes couchdb
