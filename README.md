@@ -1,20 +1,19 @@
 Cozy Dockerfile
 ===============
 
-### Base Docker Image
+This is the Dockerfile recipe used to build the official Cozy image.
+It is built on top of the Ubuntu 14.04 image.
 
-* [dockerfile/ubuntu](http://dockerfile.github.io/#/ubuntu)
-
-
-### Installation
+## Installation
 
 1. Install [Docker](https://www.docker.com/). This recipe has been tested on **Docker v1.0.1 and newer**.
-2. Build the container
+2. Fetch the Cozy image: `sudo docker pull cozy/full`
+3. You can alternatively build the container manually:
 ```bash
 sudo docker build -t cozy github.com/cozy-labs/cozy-docker
 ```
 
-### Usage
+## Usage
 
 ```
 docker run -d -p 80:80 -p 443:443 cozy
@@ -23,7 +22,7 @@ docker run -d -p 80:80 -p 443:443 cozy
 Where `-d` tells Docker to daemonize the process and `-p` to bind ports to the host.
 
 
-### Hack
+## Hack
 
 In order to modify or patch this recipe you have to clone the repository:
 ```bash
@@ -36,7 +35,7 @@ Modify the Dockerfile and/or the configuration files then build the container:
 sudo docker build -t cozy .
 ```
 
-Send us some Pull Requests ! <3
+That's all!
 
 
 ## What is Cozy?
