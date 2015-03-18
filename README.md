@@ -14,13 +14,13 @@ sudo docker pull cozy/full
 
 * OR you can build the container manually by running:
 ```bash
-sudo docker build -t cozy github.com/cozy-labs/cozy-docker
+sudo docker build -t cozy/full github.com/cozy-labs/cozy-docker
 ```
 
 ## Usage
 
 ```
-docker run -d -p 80:80 -p 443:443 cozy
+docker run -d -p 80:80 -p 443:443 cozy/full
 ```
 
 Where `-d` tells Docker to daemonize the process and `-p` to bind ports to the host.
@@ -36,7 +36,7 @@ cd cozy-docker
 
 Modify the Dockerfile and/or the configuration files then build the container:
 ```bash
-sudo docker build -t cozy .
+sudo docker build -t cozy/full .
 ```
 
 That's all!
