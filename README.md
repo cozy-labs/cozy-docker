@@ -6,9 +6,13 @@ It is built on top of the Ubuntu 14.04 image.
 
 ## Installation
 
-1. Install [Docker](https://www.docker.com/). This recipe has been tested on **Docker v1.0.1 and newer**.
-2. Fetch the Cozy image: `sudo docker pull cozy/full`
-3. You can alternatively build the container manually:
+* Install [Docker](https://www.docker.com/). This recipe has been tested on **Docker v1.0.1 and newer**.
+* Fetch the Cozy image:
+```
+sudo docker pull cozy/full
+```
+
+* OR you can build the container manually by running:
 ```bash
 sudo docker build -t cozy github.com/cozy-labs/cozy-docker
 ```
@@ -36,6 +40,17 @@ sudo docker build -t cozy .
 ```
 
 That's all!
+
+
+## Security
+
+It is highly recommended to build the image locally if you want to run Cozy in a production environment:
+```
+sudo docker build -t cozy github.com/cozy-labs/cozy-docker
+```
+
+This way, the security tokens will be reset, and the SSL certificate will be renewed.
+
 
 
 ## What is Cozy?
