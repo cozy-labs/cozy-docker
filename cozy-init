@@ -9,13 +9,13 @@ new_password=$(pwgen -1)
 echo "$new_admin = $new_password" >> /etc/couchdb/local.ini
 echo "$new_admin" > /etc/cozy/couchdb.login
 echo "$new_password" >> /etc/cozy/couchdb.login
-supervisorctl start couchdb
+supervisorctl restart couchdb
 
 # Reset controller token
 pwgen -1 > /etc/cozy/controller.token
 chown cozy-home /etc/cozy/controller.token
 chmod 700 /etc/cozy/controller.token
-supervisorctl start cozy-controller
+supervisorctl restart cozy-controller
 
 # Regenerate SSL certificates
 if [ "$DISABLE_SSL" == "true" ]; then
@@ -33,6 +33,6 @@ else
     chown cozy:cozy /etc/cozy/server.key
     chmod 600 /etc/cozy/server.key
 fi
-supervisorctl start nginx
+supervisorctl restart nginx
 
 rm -f /etc/supervisor/conf.d/cozy-init.conf
