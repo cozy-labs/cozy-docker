@@ -35,4 +35,8 @@ else
 fi
 supervisorctl restart nginx
 
+cozy-monitor restart data-system
+cozy-monitor restart home
+cozy-monitor restart proxy
+
 rm -f /etc/supervisor/conf.d/cozy-init.conf
