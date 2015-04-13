@@ -134,6 +134,6 @@ RUN apt-get clean \
 
 EXPOSE 80 443
 
-VOLUME ["/usr/local/var/lib/couchdb", "/etc/cozy", "/usr/local/cozy"]
+VOLUME ["/var/lib/couchdb", "/etc/cozy", "/usr/local/cozy"]
 
 CMD [ "/usr/local/bin/supervisord", "-n", "-c", "/etc/supervisord.conf" ]
