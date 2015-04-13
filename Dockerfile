@@ -99,18 +99,13 @@ RUN su - couchdb -c 'couchdb -b' \
  && cozy-monitor install home \
  && cozy-monitor install proxy
 
-# Generate an SSL certificate and the DH parameter.
-RUN openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/cozy/server.key -out /etc/cozy/server.crt -days 365 -subj '/CN=localhost' \
- && openssl dhparam -out /etc/cozy/dh2048.pem -outform PEM -2 2048 \
- && chown cozy:cozy /etc/cozy/server.key \
- && chmod 600 /etc/cozy/server.key
-
 # Configure Nginx and check its configuration by restarting the service.
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
-ADD nginx/cozy.conf /etc/nginx/sites-available/cozy.conf
-RUN chmod 0644 /etc/nginx/sites-available/cozy.conf \
+ADD nginx/cozy /etc/nginx/sites-available/cozy
+ADD nginx/cozy-ssl /etc/nginx/sites-available/cozy-ssl
+RUN chmod 0644 /etc/nginx/sites-available/cozy /etc/nginx/sites-available/cozy-ssl \
  && rm /etc/nginx/sites-enabled/default \
- && ln -s /etc/nginx/sites-available/cozy.conf /etc/nginx/sites-enabled/cozy.conf
+ && ln -s /etc/nginx/sites-available/cozy /etc/nginx/sites-enabled/cozy
 RUN nginx -t
 
 # Configure Postfix with default parameters.
@@ -123,9 +118,11 @@ RUN echo "postfix postfix/mailname string mydomain.net" | debconf-set-selections
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
 ADD supervisor/cozy-indexer.conf /etc/supervisor/conf.d/cozy-indexer.conf
+ADD supervisor/cozy-init.conf /etc/supervisor/conf.d/cozy-init.conf
 ADD supervisor/couchdb.conf /etc/supervisor/conf.d/couchdb.conf
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD supervisor/postfix.conf /etc/supervisor/conf.d/postfix.conf
+ADD cozy-init /etc/init.d/cozy-init
 RUN chmod 0644 /etc/supervisor/conf.d/*
 
 # Clean APT cache for a lighter image.
