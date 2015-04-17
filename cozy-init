@@ -6,7 +6,7 @@ grep -q $current_couch_login /etc/couchdb/local.ini
 if [ $? -eq 0 ]; then
     sed -i '$ d' /etc/couchdb/local.ini
 fi
-if [ "$NODE_ENV" != "dev" ]; then
+if [ "$NODE_ENV" != "development" ]; then
     new_admin=$(pwgen -1)
     new_password=$(pwgen -1)
     echo "$new_admin = $new_password" >> /etc/couchdb/local.ini
