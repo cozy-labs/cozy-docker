@@ -1,12 +1,17 @@
 #!/bin/bash
 
-# Configure a new CouchDB admin
-current_couch_login=$(head -n 1 /etc/cozy/couchdb.login)
-grep -q $current_couch_login /etc/couchdb/local.ini
-if [ $? -eq 0 ]; then
+set -e
+
+# Remove old CouchDB admin
+if [ "$(tail -n1 /etc/couchdb/local.ini | awk '{ print $1 }')" != ";admin" ]; then
     sed -i '$ d' /etc/couchdb/local.ini
 fi
-if [ "$NODE_ENV" != "development" ]; then
+
+if [ "$NODE_ENV" == "development" ]; then
+    # In development: ensure that DS will not start with CouchDB credentials
+    rm -f /etc/cozy/couchdb.login
+else
+    # In production: configure a new CouchDB admin
     new_admin=$(pwgen -1)
     new_password=$(pwgen -1)
     echo "$new_admin = $new_password" >> /etc/couchdb/local.ini
@@ -19,6 +24,7 @@ supervisorctl restart couchdb
 pwgen -1 > /etc/cozy/controller.token
 chown cozy-home /etc/cozy/controller.token
 chmod 700 /etc/cozy/controller.token
+supervisorctl restart cozy-controller
 
 # Regenerate SSL certificates
 if [ "$DISABLE_SSL" == "true" ]; then
@@ -40,6 +46,6 @@ supervisorctl restart nginx
 
 # Restart cozy-controller when CouchDB is available
 while ! curl -s 127.0.0.1:5984; do sleep 5; done
-supervisorctl restart cozy-controller
+cozy-monitor restart-cozy-stack
 
 rm -f /etc/supervisor/conf.d/cozy-init.conf
