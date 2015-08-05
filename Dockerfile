@@ -34,8 +34,8 @@ RUN pip install \
 
 # Install NodeJS and NPM by building from source.
 RUN cd /tmp \
- && wget -q -O - http://nodejs.org/dist/v0.10.26/node-v0.10.26.tar.gz | tar xz \
- && cd node-v0.10.26 \
+ && wget -q -O - http://nodejs.org/dist/v0.10.40/node-v0.10.40.tar.gz | tar xz \
+ && cd node-v0.10.40 \
  && ./configure \
  && CXX="g++ -Wno-unused-local-typedefs" make \
  && CXX="g++ -Wno-unused-local-typedefs" make install \
