@@ -13,6 +13,8 @@ RUN echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu trusty main" >> /etc/
   git \
   imagemagick \
   language-pack-en \
+  libffi6 \
+  libffi-dev \
   libssl-dev \
   libxml2-dev \
   libxslt1-dev \
