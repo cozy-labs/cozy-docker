@@ -20,10 +20,13 @@ sudo docker build -t cozy/full github.com/cozy-labs/cozy-docker
 ## Usage
 
 ```
-docker run -d -p 80:80 -p 443:443 cozy/full
+sudo docker run -d -p 80:80 -p 443:443 cozy/full
 ```
 
 Where `-d` tells Docker to daemonize the process and `-p` to bind ports to the host.
+
+Then, you can open https://localhost/ in your browser to start using your new
+dockerized cozy instance.
 
 
 ## Hack
