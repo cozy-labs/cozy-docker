@@ -29,6 +29,15 @@ Then, you can open https://localhost/ in your browser to start using your new
 dockerized cozy instance.
 
 
+## Usage as a development environment
+
+You can also use the same Docker image as a development environment. To do so, just add `-e NODE_ENV=development` and `-e DISABLE_SSL=true`:
+
+```
+sudo docker run -e NODE_ENV=development -e DISABLE_SSL=true -d -p 80:80 cozy/full
+```
+
+
 ## Hack
 
 In order to modify or patch this recipe you have to clone the repository:
