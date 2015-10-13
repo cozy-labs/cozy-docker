@@ -18,6 +18,7 @@ RUN echo "deb http://ppa.launchpad.net/nginx/stable/ubuntu trusty main" >> /etc/
   libssl-dev \
   libxml2-dev \
   libxslt1-dev \
+  libjpeg-dev \
   lsof \
   nginx \
   postfix \
