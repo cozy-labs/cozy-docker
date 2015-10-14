@@ -116,6 +116,8 @@ RUN nginx -t
 RUN echo "postfix postfix/mailname string mydomain.net" | debconf-set-selections \
  && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
  && echo "postfix postfix/destinations string mydomain.net, localhost.localdomain, localhost " | debconf-set-selections \
+ && cp /etc/services /var/spool/postfix/etc/
+ && cp /etc/resolv.conf /var/spool/postfix/etc
  && postfix check
 
 # Import Supervisor configuration files.
