@@ -35,16 +35,9 @@ RUN pip install \
   supervisor \
   virtualenv
 
-# Install NodeJS and NPM by building from source.
-RUN cd /tmp \
- && wget -q -O - http://nodejs.org/dist/v0.10.40/node-v0.10.40.tar.gz | tar xz \
- && cd node-v0.10.40 \
- && ./configure \
- && CXX="g++ -Wno-unused-local-typedefs" make \
- && CXX="g++ -Wno-unused-local-typedefs" make install \
- && cd .. \
- && rm -rf /tmp/node-v* \
- && npm install -g npm@latest-2
+# Install NodeJS 4.2.X LTS
+RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+RUN apt-get install -y nodejs
 
 # Install CoffeeScript, Cozy Monitor and Cozy Controller via NPM.
 RUN npm install -g \
