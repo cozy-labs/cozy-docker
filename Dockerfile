@@ -44,7 +44,7 @@ RUN cd /tmp \
  && CXX="g++ -Wno-unused-local-typedefs" make install \
  && cd .. \
  && rm -rf /tmp/node-v* \
- && npm install -g npm
+ && npm install -g npm@latest-2
 
 # Install CoffeeScript, Cozy Monitor and Cozy Controller via NPM.
 RUN npm install -g \
