@@ -1,0 +1,15 @@
+cozy_data:
+  container_name: cozy_data
+  image: alpine
+  volumes:
+    - ./cozy-etc:/etc/cozy
+    - ./cozy-couchdb:/var/lib/couchdb
+    - ./cozy-local:/usr/local/cozy
+  command: /bin/true
+cozy:
+  build: .
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes_from:
+    - cozy_data
