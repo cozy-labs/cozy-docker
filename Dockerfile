@@ -79,7 +79,12 @@ RUN su - couchdb -c 'couchdb -b' \
  && while ! curl -s 127.0.0.1:9002; do sleep 5; done \
  && cozy-monitor install data-system \
  && cozy-monitor install home \
- && cozy-monitor install proxy
+ && cozy-monitor install proxy \
+ && curl -X POST http://localhost:9103/api/instance -H "Content-Type: application/json" -d '{"background":"background-07"}' \
+ && for app in calendar contacts photos emails files sync; do \
+   cozy-monitor install $app; \
+ done \
+ && cozy-monitor install import-from-google -r https://github.com/cozy-labs/import-from-google.git
 
 # Configure Nginx and check its configuration by restarting the service.
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
