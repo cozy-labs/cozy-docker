@@ -36,7 +36,7 @@ RUN pip install \
   virtualenv
 
 # Install NodeJS 4.2.X LTS
-RUN curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
 RUN apt-get install -y nodejs
 
 # Install CoffeeScript, Cozy Monitor and Cozy Controller via NPM.

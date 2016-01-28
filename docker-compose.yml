@@ -1,3 +1,4 @@
+---
 cozy_data:
   container_name: cozy_data
   image: alpine
