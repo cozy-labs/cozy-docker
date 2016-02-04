@@ -35,16 +35,9 @@ RUN pip install \
   supervisor \
   virtualenv
 
-# Install NodeJS and NPM by building from source.
-RUN cd /tmp \
- && wget -q -O - http://nodejs.org/dist/v0.10.40/node-v0.10.40.tar.gz | tar xz \
- && cd node-v0.10.40 \
- && ./configure \
- && CXX="g++ -Wno-unused-local-typedefs" make \
- && CXX="g++ -Wno-unused-local-typedefs" make install \
- && cd .. \
- && rm -rf /tmp/node-v* \
- && npm install -g npm@latest-2
+# Install NodeJS 4.2.X LTS
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
+RUN apt-get install -y nodejs
 
 # Install CoffeeScript, Cozy Monitor and Cozy Controller via NPM.
 RUN npm install -g \
@@ -77,30 +70,21 @@ RUN mkdir -p /var/log/supervisor \
  && chmod 777 /var/log/supervisor \
  && /usr/local/bin/supervisord -c /etc/supervisord.conf
 
-# Install Cozy Indexer.
-RUN mkdir -p /usr/local/cozy-indexer \
- && cd /usr/local/cozy-indexer \
- && git clone https://github.com/cozy/cozy-data-indexer.git \
- && cd /usr/local/cozy-indexer/cozy-data-indexer \
- && virtualenv --quiet /usr/local/cozy-indexer/cozy-data-indexer/virtualenv \
- && . ./virtualenv/bin/activate \
- && pip install -r /usr/local/cozy-indexer/cozy-data-indexer/requirements/common.txt \
- && chown -R cozy:cozy /usr/local/cozy-indexer
-
 # Start up background services and install the Cozy platform apps.
 ENV NODE_ENV production
 RUN su - couchdb -c 'couchdb -b' \
  && sleep 5 \
  && while ! curl -s 127.0.0.1:5984; do sleep 5; done \
- && /usr/local/lib/node_modules/cozy-controller/bin/cozy-controller & sleep 5 \
+ && cozy-controller & sleep 5 \
  && while ! curl -s 127.0.0.1:9002; do sleep 5; done \
- && cd /usr/local/cozy-indexer/cozy-data-indexer \
- && . ./virtualenv/bin/activate \
- && /usr/local/cozy-indexer/cozy-data-indexer/virtualenv/bin/python server.py & sleep 5 \
- && while ! curl -s 127.0.0.1:9102; do sleep 5; done \
  && cozy-monitor install data-system \
  && cozy-monitor install home \
- && cozy-monitor install proxy
+ && cozy-monitor install proxy \
+ && curl -X POST http://localhost:9103/api/instance -H "Content-Type: application/json" -d '{"background":"background-07"}' \
+ && for app in calendar contacts photos emails files sync; do \
+   cozy-monitor install $app; \
+ done \
+ && cozy-monitor install import-from-google -r https://github.com/cozy-labs/import-from-google.git
 
 # Configure Nginx and check its configuration by restarting the service.
 ADD nginx/nginx.conf /etc/nginx/nginx.conf
@@ -122,7 +106,6 @@ RUN echo "postfix postfix/mailname string mydomain.net" | debconf-set-selections
 
 # Import Supervisor configuration files.
 ADD supervisor/cozy-controller.conf /etc/supervisor/conf.d/cozy-controller.conf
-ADD supervisor/cozy-indexer.conf /etc/supervisor/conf.d/cozy-indexer.conf
 ADD supervisor/cozy-init.conf /etc/supervisor/conf.d/cozy-init.conf
 ADD supervisor/couchdb.conf /etc/supervisor/conf.d/couchdb.conf
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
