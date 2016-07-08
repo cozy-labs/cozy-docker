@@ -95,10 +95,10 @@ RUN chmod 0644 /etc/nginx/sites-available/cozy /etc/nginx/sites-available/cozy-s
 RUN nginx -t
 
 # Configure Postfix with default parameters.
-# TODO: Change mydomain.net?
-RUN echo "postfix postfix/mailname string mydomain.net" | debconf-set-selections \
+ENV POSTFIX_DOMAIN mydomain.net
+RUN echo "postfix postfix/mailname string $POSTFIX_DOMAIN" | debconf-set-selections \
  && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
- && echo "postfix postfix/destinations string mydomain.net, localhost.localdomain, localhost " | debconf-set-selections \
+ && echo "postfix postfix/destinations string $POSTFIX_DOMAIN, localhost.localdomain, localhost " | debconf-set-selections \
  && cp /etc/services /var/spool/postfix/etc/ \
  && cp /etc/resolv.conf /var/spool/postfix/etc \
  && postfix check
