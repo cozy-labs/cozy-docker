@@ -95,6 +95,7 @@ RUN chmod 0644 /etc/nginx/sites-available/cozy /etc/nginx/sites-available/cozy-s
 RUN nginx -t
 
 # Configure Postfix with default parameters.
+ENV DISABLE_SSL true
 ENV POSTFIX_DOMAIN mydomain.net
 RUN echo "postfix postfix/mailname string $POSTFIX_DOMAIN" | debconf-set-selections \
  && echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections \
