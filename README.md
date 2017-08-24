@@ -1,6 +1,12 @@
 Cozy Dockerfile
 ===============
 
+## ⚠️ DEPRECATION WARNING ⚠️ **
+
+This was an experimental image for the old version of Cozy, based on Node.js. Both this version and this image are now deprecated and unmaintained. Some work has been done to create an [image for the new, Go based, Cozy V3](https://github.com/cozy/gozy-docker), but this is still a work in progress.
+
+---
+
 This is the Dockerfile recipe used to build the official Cozy image.
 It is built on top of the Ubuntu 14.04 image.
 
